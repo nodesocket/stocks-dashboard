@@ -26,7 +26,11 @@ const PORTFOLIOS = [{'name': 'Portfolio', 'symbols': ['AAPL', 'BAC', 'BRK.B', 'S
 Note you can provide multiple portfolios:
 
 ```js
-const PORTFOLIOS = [{'name': 'Banks', 'symbols': ['MS', 'BAC', 'WFS']}, {'name': 'Tech', 'symbols': ['AAPL', 'GOOG', 'AMZN', 'NVDA']}, {'name': 'Trump Stocks', 'symbols': ['CAT', 'BA', 'NUE', 'X', 'RTN']}];
+const PORTFOLIOS = [
+    {'name': 'Banks', 'symbols': ['MS', 'BAC', 'WFS']},
+    {'name': 'Tech', 'symbols': ['AAPL', 'GOOG', 'AMZN', 'NVDA']},
+    {'name': 'Trump Stocks', 'symbols': ['CAT', 'BA', 'NUE', 'X', 'RTN']}
+];
 ```
 
 ## IEX API
