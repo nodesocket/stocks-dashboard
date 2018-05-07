@@ -1,13 +1,13 @@
 # stocks-dashboard
 
-A free, lightweight, and beautiful static dashboard for stock quotes using the [IEX API](https://iextrading.com/developer/). Fully responsive design that adapts to mobile, tablet, and desktop. Stocks can be grouped into user-defined portfolios. Quotes update every 5 seconds. No API key required.
+A free, lightweight, and beautiful static dashboard for stock quotes using the [IEX API](https://iextrading.com/developer/). Fully responsive design that adapts to mobile, tablet, desktop, and TV. Stocks can be grouped into user-defined portfolios. Quotes update every 5 seconds. No API key required.
 
 Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwschneider/stocks</a> 🙏.
 
 ## Improvements
 
 - Beautiful CSS styles
-- Fully responsive *(mobile, tablet, desktop)* using [salvattore.js](https://salvattore.js.org/)
+- Fully responsive *(mobile, tablet, desktop, TV)* using [salvattore.js](https://salvattore.js.org/)
 - Ticker symbols link to Yahoo Finance stock pages
 - Increased market cap precision
 
