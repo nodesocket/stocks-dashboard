@@ -4,9 +4,9 @@ A free, lightweight, and beautiful static dashboard for stock quotes using the [
 
 Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwschneider/stocks</a> 🙏.
 
-## Imrovements
+## Improvements
 
-- Beatiful CSS styles
+- Beautiful CSS styles
 - Fully responsive *(mobile, table, desktop)* using [salvattore.js](https://salvattore.js.org/)
 - Ticker symbols link to Yahoo Finance
 - Increased market cap precision
