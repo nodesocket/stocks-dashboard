@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Stocks Dashboard</title>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+        }
+
+        .grid[data-columns]::before {
+            content: '5 .column.size-1of5';
+        }
+
+        @media screen and (max-width: 580px){
+            .grid[data-columns]::before {
+                content: '1 .column.size-1of1';
+            }
+        }
+
+        @media screen and (min-width: 581px) and (max-width: 1023px) {
+            .grid[data-columns]::before {
+                content: '3 .column.size-1of3';
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            .grid[data-columns]::before {
+                content: '5 .column.size-1of5';
+            }
+        }
+
+        .column {
+            float: left;
+        }
+
+        .size-1of1 {
+            width: 100%;
+        }
+
+        .size-1of3 {
+            width: 33.333%;
+        }
+
+        .size-1of5 {
+            width: 20%;
+        }
+
+        .symbol-box h1 a {
+            color: #000000;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .symbol-box h1 a:hover {
+            text-decoration: underline;
+        }
+
+        .portfolio-container {
+            margin-bottom: 5em;
+        }
+
+        .symbol-box h1 {
+            font-weight: 100;
+            font-size: 3.5em;
+            line-height: 1em;
+            margin: 0;
+            padding: .5em 0 0 0;
+        }
+
+        .symbol-box .stock-price {
+            font-weight: 800;
+            font-size: 2.5em;
+            padding: .5em 15px;
+        }
+
+        .symbol-box .stock-change, .symbol-box .stock-change-pct {
+            font-size: 1.5em;
+            padding: .5em 15px;
+        }
+
+        .symbol-box .stock-mkt-cap {
+            font-weight: 200;
+            font-size: 0.7em;
+            padding: 1.5em 15px;
+        }
+
+        .portfolio-name {
+            color: #d0d0d0;
+            font-size: 4em;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .stock-price, .stock-change, .stock-change-pct, .stock-mkt-cap {
+            margin: 0;
+        }
+
+        .updated-timestamp {
+            color: #aaaaaa;
+            font-size: .7em;
+            margin-top: 2em;
+            text-align: center;
+        }
+
+        .attribution {
+            display: block;
+            color: #aaaaaa;
+            font-size: .7em;
+            text-align: center;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"></div>
+
+    <p class="updated-timestamp"></p>
+    <small class="attribution">
+        Based on the project <a href="https://github.com/toddwschneider/stocks" target="_blank">@toddwschneider/stocks</a>.
+        Data provided for free by <a href="https://iextrading.com/developer/" target="_blank">IEX</a>.
+        Subject to <a href="https://iextrading.com/api-exhibit-a/" target="_blank">IEX Exhibit A</a>.
+    </small>
+
+    <script>
+      'use strict';
+
+      const PORTFOLIOS = [
+        {'name': 'Portfolio', 'symbols': ['AAPL', 'BAC', 'BRK.B', 'SPY', 'F',]}
+      ];
+
+      const REFRESH_SECONDS = 5;
+      const BATCH_SIZE = 100;
+      const BASE_URL = 'https://api.iextrading.com/1.0/stock/market/batch';
+
+      let symbols = [];
+      let containerDiv = document.querySelector('.container');
+      let updatedDiv = document.querySelector('.updated-timestamp');
+
+      PORTFOLIOS.forEach((p, i) => addPortfolio(p, i === 0));
+      symbols = symbols.filter((s, i) => symbols.indexOf(s) === i);
+      updateData('addTitle');
+      setInterval(updateData, REFRESH_SECONDS * 1000);
+
+      function addPortfolio(portfolio, includeHeader) {
+        let bodyHtml = portfolio.symbols.map(symbol => {
+          symbol = symbol.toUpperCase();
+          symbols.push(symbol);
+
+          let html = `
+            <div class="symbol-box" data-symbol="${symbol}">
+                <h1><a href="${symbolUrl(symbol)}" target="_blank">${symbol}</a></h1>
+                <h2 class="stock-price"></h2>
+                <h3 class="stock-change"></h3>
+                <h3 class="stock-change-pct"></h3>
+                <h4 class="stock-mkt-cap"></h4>
+            </div>
+          `;
+
+          return html;
+        }).join('');
+
+        let portfolioDiv = document.createElement('div');
+        portfolioDiv.classList.add('portfolio-container');
+
+        portfolioDiv.innerHTML = `
+            <h1 class="portfolio-name">${portfolio.name}</h1>
+            <div class="grid" data-columns>${bodyHtml}</div>
+            <div style="clear: both"></div>
+        `;
+
+        containerDiv.appendChild(portfolioDiv);
+      }
+
+      function updateData(addTitle) {
+        let numberOfBatches = Math.ceil(symbols.length / BATCH_SIZE);
+
+        for (let i = 0; i < numberOfBatches; i++) {
+          let symbolsBatch = symbols.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE);
+          updateDataForBatch(symbolsBatch, addTitle);
+        }
+
+        updatedDiv.innerHTML = `Updated ${(new Date()).toLocaleString()}`;
+      }
+
+      function updateDataForBatch(symbols, addTitle) {
+        let filters = ['latestPrice', 'change', 'changePercent', 'marketCap'];
+        let url = `${BASE_URL}?types=quote&symbols=${symbols.join(',')}&filter=${filters.join(',')}`;
+
+        fetch(url).then(response => response.json()).then(json => {
+          symbols.forEach(symbol => {
+            let data = json[symbol];
+            if (typeof(data) === 'undefined') return;
+
+            let formattedPrice = formatQuote(data.quote.latestPrice);
+            let formattedChange = data.quote.change.toLocaleString('en', {'minimumFractionDigits': 2});
+            let formattedChangePercent = (data.quote.changePercent * 100).toFixed(2) + '%';
+            let formattedMarketCap = formatMarketCap(data.quote.marketCap);
+            let rgbColor = data.quote.changePercent > 0 ? '0,255,0' : '255,0,0';
+            let rgbOpacity = Math.min(Math.abs(data.quote.changePercent) * 20, 1);
+
+            document.querySelectorAll(`[data-symbol="${symbol}"] .stock-price`).forEach(e => {
+              e.innerHTML = formattedPrice;
+              e.setAttribute('style', `background-color: rgba(${rgbColor}, ${rgbOpacity})`);
+            });
+
+            document.querySelectorAll(`[data-symbol="${symbol}"] .stock-change`).forEach(e => {
+              e.innerHTML = formattedChange;
+              e.setAttribute('style', `background-color: rgba(${rgbColor}, ${rgbOpacity})`);
+            });
+
+            document.querySelectorAll(`[data-symbol="${symbol}"] .stock-change-pct`).forEach(e => {
+              e.innerHTML = formattedChangePercent;
+              e.setAttribute('style', `background-color: rgba(${rgbColor}, ${rgbOpacity})`);
+            });
+
+            document.querySelectorAll(`[data-symbol="${symbol}"] .stock-mkt-cap`).forEach(e => {
+              e.innerHTML = formattedMarketCap;
+              e.setAttribute('style', `background-color: rgba(${rgbColor}, ${rgbOpacity})`);
+            });
+
+            if (addTitle) {
+              document.querySelectorAll(`[data-symbol="${symbol}"] .stock-symbol a`).forEach(e => {
+                e.setAttribute('title', data.quote.companyName);
+              });
+            }
+          });
+        });
+      }
+
+      function symbolUrl(symbol) {
+        return `https://finance.yahoo.com/quote/${symbol.replace('.', '-')}`;
+      }
+
+      function formatQuote(value) {
+        let options = {
+          'minimumFractionDigits': 2,
+          'style': 'decimal'
+        };
+        return value.toLocaleString('en', options);
+      }
+
+      function formatMarketCap(marketCap) {
+        let value, suffix;
+        if (marketCap >= 1e12) {
+          value = marketCap / 1e12;
+          suffix = 'T';
+        } else if (marketCap >= 1e9) {
+          value = marketCap / 1e9;
+          suffix = 'B';
+        } else {
+          value = marketCap / 1e6;
+          suffix = 'M';
+        }
+
+        let digits = value < 10 ? 2 : 1;
+
+        return 'Market Cap: $' + value.toFixed(digits) + suffix;
+      }
+    </script>
+    <script src="js/salvattore.js"></script>
+  </body>
+</html>
