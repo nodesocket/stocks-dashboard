@@ -19,19 +19,19 @@ Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwsc
 
 Edit the `PORTFOLIOS` variable within `index.html`. For example:
 
-```js
 <nobr>
+```js
 const PORTFOLIOS = [{'name': 'Portfolio', 'symbols': ['AAPL', 'BAC', 'BRK.B', 'SPY', 'F']}];
-</nobr>
 ```
+</nobr>
 
 Note you can provide multiple portfolios:
 
-```js
 <nobr>
+```js
 const PORTFOLIOS = [{'name': 'Banks', 'symbols': ['MS', 'BAC', 'WFS']}, {'name': 'Tech', 'symbols': ['AAPL', 'GOOG', 'AMZN', 'NVDA']}, {'name': 'Trump Stocks', 'symbols': ['CAT', 'BA', 'NUE', 'X', 'RTN']}];
-</nobr>
 ```
+</nobr>
 
 ## IEX API
 
