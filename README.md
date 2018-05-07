@@ -7,8 +7,8 @@ Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwsc
 ## Improvements
 
 - Beautiful CSS styles
-- Fully responsive *(mobile, table, desktop)* using [salvattore.js](https://salvattore.js.org/)
-- Ticker symbols link to Yahoo Finance
+- Fully responsive *(mobile, tablet, desktop)* using [salvattore.js](https://salvattore.js.org/)
+- Ticker symbols link to Yahoo Finance stock pages
 - Increased market cap precision
 
 ## Screenshot
