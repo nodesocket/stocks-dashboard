@@ -13,7 +13,7 @@ Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwsc
 
 ## Screenshot
 
-![sample stocks-dashboard](https://i.imgur.com/ReCyZmR.png)
+![sample stocks-dashboard](https://i.imgur.com/WNzVRQ0.png)
 
 ## Customize
 
