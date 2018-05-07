@@ -4,6 +4,13 @@ A free, lightweight, and beautiful static dashboard for stock quotes using the [
 
 Based on the project <a href="https://github.com/toddwschneider/stocks">@toddwschneider/stocks</a> 🙏.
 
+## Imrovements
+
+- Beatiful CSS styles
+- Fully responsive *(mobile, table, desktop)* using [salvattore.js](https://salvattore.js.org/)
+- Ticker symbols link to Yahoo Finance
+- Increased market cap precision
+
 ## Screenshot
 
 [![sample stocks-dash]()]
@@ -18,7 +25,7 @@ const PORTFOLIOS = [{'name': 'Portfolio', 'symbols': ['AAPL', 'BAC', 'BRK.B', 'S
 
 Note you can provide multiple portfolios:
 
-```
+```js
 const PORTFOLIOS = [{'name': 'Banks', 'symbols': ['MS', 'BAC', 'WFS']}, {'name': 'Tech', 'symbols': ['AAPL', 'GOOG', 'AMZN', 'NVDA']}];
 ```
 
