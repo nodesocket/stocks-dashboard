@@ -1,4 +1,4 @@
-# stocks-dash
+# stocks-dashboard
 
 A free, lightweight, and beautiful static dashboard for stock quotes using the [IEX API](https://iextrading.com/developer/). Stocks can be grouped into user-defined portfolios. Quotes update every 5 seconds. No API key required.
 
