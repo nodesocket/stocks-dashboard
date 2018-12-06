@@ -27,9 +27,8 @@ Note you can provide multiple portfolios:
 
 ```js
 const PORTFOLIOS = [
-    {'name': 'Banks', 'symbols': ['MS', 'BAC', 'WFS']},
-    {'name': 'Tech', 'symbols': ['AAPL', 'GOOG', 'AMZN', 'NVDA']},
-    {'name': 'Trump Stocks', 'symbols': ['CAT', 'BA', 'NUE', 'X', 'RTN']}
+    {'name': 'Banks', 'symbols': ['BAC', 'MS', 'GS', 'C']},
+    {'name': 'Tech', 'symbols': ['AAPL', 'AMZN', 'TSLA', 'NFLX']}
 ];
 ```
 
